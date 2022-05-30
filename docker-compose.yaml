@@ -10,6 +10,11 @@ services:
     volumes:
       - ./mysql_data:/var/lib/mysql
       - ./database:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "/usr/bin/mysqladmin", "ping", "-h", "localhost", "-u${MYSQL_USER}", "-p${MYSQL_PASS}"]
+      start_period: 5s
+      interval: 10s
+      timeout: 2s
   restapi:
     image: restapi
     build: .
@@ -17,6 +22,9 @@ services:
       - "8080:8080"
     restart: always
     depends_on:
-      - mysqldb
+      mysqldb:
+        condition: service_healthy
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/optic_data?useSSL=false
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASS}
