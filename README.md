@@ -16,7 +16,7 @@ The operations we'd like to see supported are
 - All data is in JSON format
 - Any request that is malformed will receive a 400 response
 - A lookup request that is properly formed but does not match a known identifier will receive a 404 response
-- Add requests will receive the added entity in JSON format
+- Add requests will receive the added entity in the response
 
 ### Bot Endpoints
 - GET `/bots/id/{id}` - lookup a bot by ID
@@ -28,6 +28,9 @@ The operations we'd like to see supported are
 - GET `/attacks/all` - list all attacks
 - GET `/attacks/find` - requires `start` and `end` querystring parameters in ISO date time format, e.g. `2022-01-01T00:00:00.000-05:00`. *Be sure* to URL-encode the parameter values, otherwise +GMT offsets will be interpreted incorrectly!
 - POST `/attacks/add` - requires a JSON request body in the form `{"site":"example.com", "attackDate": "2022-01-01T12:00:00.000-05:00", "botIds":[1, 2, 3]}`. Bot IDs are IDs of **previously added** bots. If at least one specified bot ID is valid, the attack will be added with the valid bot IDs associated to it.
+
+## Testing
+I've added a single unit test for the AttackService class to demonstrate my approach for separating concerns and mocking dependencies. In a real application there would also be integration tests to ensure that the controllers work as expected. I don't feel that unit tests for the controllers are particularly helpful, as their correctness relies on Spring behavior such as @Validated, which a unit test would not capture.
  
 ## Requirements
  - Use the provided MySQL database

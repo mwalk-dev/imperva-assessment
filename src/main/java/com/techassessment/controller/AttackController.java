@@ -6,7 +6,6 @@ import com.techassessment.controller.model.CreateAttackData;
 import com.techassessment.repository.model.Attack;
 import com.techassessment.service.AttackService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +17,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("v1/attacks")
 @ResponseBody
 public class AttackController {
-    @Autowired
-    private AttackService attackService;
+    private final AttackService attackService;
+
+    public AttackController(AttackService attackService) {
+        this.attackService = attackService;
+    }
 
     @GetMapping(path = "/id/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Attack> getAttack(@PathVariable("id") int id) {

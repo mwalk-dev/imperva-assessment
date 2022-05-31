@@ -12,16 +12,17 @@ import com.techassessment.repository.BotRepository;
 import com.techassessment.repository.model.Attack;
 import com.techassessment.repository.model.Bot;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AttackService {
-    @Autowired
-    private AttackRepository attackRepository;
+    private final AttackRepository attackRepository;
+    private final BotRepository botRepository;
 
-    @Autowired
-    private BotRepository botRepository;
+    public AttackService(AttackRepository attackRepository, BotRepository botRepository) {
+        this.attackRepository = attackRepository;
+        this.botRepository = botRepository;
+    }
 
     // Assumes that attacks are defined referencing previously known bots; we don't also insert new bots when inserting
     // an attack. Requirements did not specify. In a real application we probably want to support an attack consisting

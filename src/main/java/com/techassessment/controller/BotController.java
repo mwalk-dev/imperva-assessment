@@ -3,7 +3,6 @@ package com.techassessment.controller;
 import com.techassessment.repository.model.Bot;
 import com.techassessment.service.BotService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("v1/bots")
 @ResponseBody
 public class BotController {
-    @Autowired
-    private BotService botService;
+    private final BotService botService;
+
+    public BotController(BotService botService) {
+        this.botService = botService;
+    }
 
     @GetMapping(path = "/id/{id}")
     public ResponseEntity<Bot> getBot(@PathVariable(name = "id", required = true) int id) {        
